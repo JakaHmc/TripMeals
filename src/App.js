@@ -7,6 +7,7 @@ import MyTrip from "./pages/MyTrip";
 import MyTripSuccess from "./pages/MyTripSuccess";  
 import Dishes from "./pages/Dishes";
 import AddDish from "./pages/AddDish";
+import Home from "./pages/Home";
 export default function App() {
   return (
     <Router>
@@ -26,16 +27,4 @@ export default function App() {
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }
