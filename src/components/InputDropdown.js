@@ -1,30 +1,34 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import DropdownButton from 'react-bootstrap/DropdownButton'; // Import DropdownButton
-import Dropdown from 'react-bootstrap/Dropdown'; // Import Dropdown
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-function InputDropdown({ id, description, value, onChange }) {
+function InputDropdown({ id, description, value, onChange, options, defaultValue }) {
   const handleDropdownChange = (selectedValue) => {
     onChange(id, selectedValue);
   };
 
+  // Determine the value to display
+  const displayValue = value !== undefined ? value : defaultValue;
+
   return (
-    <InputGroup className="mb-3" size="lg" >
+    <InputGroup className="mb-3" size="lg">
       <DropdownButton
         variant="outline-secondary"
-        title={description} // Use description as the title of the dropdown button
-        id={`input-dropdown-${id}`} // Use id to create a unique id for the dropdown button
-        onSelect={handleDropdownChange} // Call handleDropdownChange when an item is selected
+        title={description}
+        id={`input-dropdown-${id}`}
+        onSelect={handleDropdownChange}
       >
-        <Dropdown.Item eventKey="Zajtrk">Zajtrk</Dropdown.Item>
-        <Dropdown.Item eventKey="Kosilo">Kosilo</Dropdown.Item>
-        <Dropdown.Item eventKey="Malica">Malica</Dropdown.Item>
-
+        {options.map((option, index) => (
+          <Dropdown.Item key={index} eventKey={option}>
+            {option}
+          </Dropdown.Item>
+        ))}
       </DropdownButton>
       <Form.Control
-        value={value}
-        readOnly // Make the input field read-only to display the selected value
+        value={displayValue}
+        readOnly
         aria-label="Text input with dropdown button"
       />
     </InputGroup>

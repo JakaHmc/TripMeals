@@ -8,6 +8,7 @@ import MyTripSuccess from "./pages/MyTripSuccess";
 import Dishes from "./pages/Dishes";
 import AddDish from "./pages/AddDish";
 import Home from "./pages/Home";
+import Test from "./pages/Test";
 export default function App() {
   return (
     <Router>
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/my-trip-success" element={<MyTripSuccess />} />
           <Route path="/dishes" element={<Dishes />} />
           <Route path="/add-dish" element={<AddDish />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       </div>
     </Router>
