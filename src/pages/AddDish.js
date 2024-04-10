@@ -9,6 +9,7 @@ import InputDropdown from '../components/InputDropdown';
 export default function Test() {
     const [recipe, setRecipe] = useState({
         name: '',
+        servings: '',
         type: '',
         ingredients: [''], 
         amounts: [''],
@@ -16,6 +17,7 @@ export default function Test() {
     });
 
     const [notification, setNotification] = useState(null);
+    const [notificationGood, setNotificationGood] = useState(null);
 
     const navigate = useNavigate(); // Initialize useNavigate hook
 
@@ -46,18 +48,48 @@ export default function Test() {
         }));
     }
 
+    
     const handleButtonClick = async () => {
+        if (!recipe.name || !recipe.type || !recipe.ingredients || !recipe.amounts || !recipe.units || !recipe.servings)  {
+            setNotification('Prosim, izpolni vsa polja.');
+            setTimeout(() => {
+                setNotification(null);
+            }, 3000);
+            return; // Exit the function early
+        }
+        
+        // Check if any ingredient names, amounts, or units are empty
+        if (recipe.ingredients.some(ingredient => ingredient === "") || 
+            recipe.amounts.some(amount => amount === "") || 
+            recipe.units.some(unit => unit === "")) {
+            setNotification('Prosim, izpolni vsa polja.');
+            setTimeout(() => {
+                setNotification(null);
+            }, 3000);
+            return; // Exit the function early
+        }
+    
+        // Check if lengths of ingredients, amounts, and units arrays are the same
+        const { ingredients, amounts, units } = recipe;
+        if (ingredients.length !== amounts.length || ingredients.length !== units.length) {
+            setNotification('Prosim izpolni vsa polja.');
+            setTimeout(() => {
+                setNotification(null);
+            }, 3000);
+            return; // Exit the function early
+        }
         try {
             const docRef = await addDoc(collection(db, "recipes"), {
                 name: recipe.name,
                 type: recipe.type,
+                servings: recipe.servings,
                 ingredients: recipe.ingredients,
                 amounts: recipe.amounts,
                 units: recipe.units
             });
-            setNotification('Recept shranjen!');
+            setNotificationGood('Recept shranjen!');
             setTimeout(() => {
-                setNotification(null);
+                setNotificationGood(null);
             }, 3000);
             console.log("Document written with ID: ", docRef.id);
         } catch (error) {
@@ -100,8 +132,11 @@ export default function Test() {
             />
           </div>
             <div className="row">
-                            <div className="col-md-6">
+                <div className="col-md-12">
                     <InputText id="name" description="Ime jedi" value={recipe.name} onChange={(id, value) => setRecipe(prevState => ({ ...prevState, name: value }))} />
+                </div>    
+                <div className="col-md-6">
+                    <InputDropdown id="servings" description="Recept nahrani" value={recipe.servings} options = {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} onChange={(id, value) => setRecipe(prevState => ({ ...prevState, servings: value }))} />
                 </div>    
                 <div className="col-md-6">
                     <InputDropdown id="type" description="Obrok" value={recipe.type} options = {['Zajtrk', 'Kosilo', 'Malica']} onChange={(id, value) => setRecipe(prevState => ({ ...prevState, type: value }))} />
@@ -133,7 +168,8 @@ export default function Test() {
                 <ButtonSend text="Odstrani" variant="outline-danger" onClick={removeIngredientRow} />
               </div>
               <ButtonSend text="Shrani recept" variant="primary" onClick={handleButtonClick}/>
-              {notification && <div className="notification">{notification}</div>} {/* Notification */}
+              {notification && <div class="alert alert-danger" role="alert" style =  {{ marginTop: '10px'}}>{notification}</div>} {/* Notification */}
+              {notificationGood && <div class="alert alert-success" role="alert" style =  {{ marginTop: '10px'}}>{notificationGood}</div>} {/* Notification */}
         </div>
     );
 }
