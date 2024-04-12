@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { db } from "../components/Firebase";
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import ButtonSend from '../components/ButtonSend';
+import TableDishes from '../components/TableDishes';
+
 export default function Dishes() {
     const [recipes, setRecipes] = useState([]);
-    
-    const navigate = useNavigate(); // Initialize useNavigate hook
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchRecipes = async () => {
             const recipesCollection = collection(db, "recipes");
             const recipesSnapshot = await getDocs(recipesCollection);
-            const recipesData = recipesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            let recipesData = recipesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            // Sort recipes alphabetically by name
+            recipesData.sort((a, b) => a.name.localeCompare(b.name));
+
             setRecipes(recipesData);
         };
-        
         fetchRecipes();
     }, []);
-    
+
     const handleEdit = (id) => {
         // Redirect to edit page with the recipe id
+
+        navigate(`/edit/${id}`);
     };
-    
+
     const handleRemove = async (id) => {
         try {
             await deleteDoc(doc(db, "recipes", id));
@@ -33,25 +39,21 @@ export default function Dishes() {
     };
 
     return (
-        
-        <div className="container" backgroundColor="black" style={{ paddingTop:'20px', fontSize: '0.8rem'}}>
-          <div className="home-button" style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px'}}>
-            <ButtonSend 
-              text="Domov"
-              variant="primary"
-              onClick={() => navigate('/home')} // Use navigate hook to navigate to home page
-            />
+        <div className="container" style={{ paddingTop: '20px', fontSize: '0.8rem' }}>
+            <div className="home-button" style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px' }}>
+                <ButtonSend
+                    text="Domov"
+                    variant="primary"
+                    onClick={() => navigate('/home')}
+                />
+                <ButtonSend
+                    text="Dodaj recept"
+                    variant="primary"
+                    onClick={() => navigate('/add-dish')}
+                />
             </div>
             <h1>Recipes</h1>
-            <ul>
-                {recipes.map(recipe => (
-                    <li key={recipe.id}>
-                        <span>{recipe.name}</span>
-                        <button onClick={() => handleEdit(recipe.id)}>Edit</button>
-                        <button onClick={() => handleRemove(recipe.id)}>Remove</button>
-                    </li>
-                ))}
-            </ul>
+            <TableDishes recipes={recipes} handleEdit={handleEdit} handleRemove={handleRemove} />
         </div>
     );
 }

@@ -9,15 +9,17 @@ import Dishes from "./pages/Dishes";
 import AddDish from "./pages/AddDish";
 import Home from "./pages/Home";
 import Test from "./pages/Test";
+import EditRecipe from "./pages/EditRecipe";
+
 export default function App() {
   return (
     <Router>
       <div>
         <Routes>
-          <Route element={<Home />}/>
+          <Route element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />}/>
-          <Route path="/home" element={<Home />}/>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/add-trip" element={<AddTrip />} />
           <Route path="/add-trip-success" element={<AddTripSuccess />} />
           <Route path="/my-trip" element={<MyTrip />} />
@@ -25,6 +27,7 @@ export default function App() {
           <Route path="/dishes" element={<Dishes />} />
           <Route path="/add-dish" element={<AddDish />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/edit/:id" element={<EditRecipe />} /> {/* Modified route for editing */}
         </Routes>
       </div>
     </Router>

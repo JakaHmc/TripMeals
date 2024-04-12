@@ -118,7 +118,7 @@ export default function Test() {
     };
 
     return (
-        <div className="container" backgroundColor="black" style={{ paddingTop:'20px', fontSize: '0.8rem'}}>
+        <div className="container" style={{ paddingTop:'20px', fontSize: '0.8rem'}}>
           <div className="home-button" style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px'}}>
             <ButtonSend 
               text="Domov"
@@ -168,8 +168,8 @@ export default function Test() {
                 <ButtonSend text="Odstrani" variant="outline-danger" onClick={removeIngredientRow} />
               </div>
               <ButtonSend text="Shrani recept" variant="primary" onClick={handleButtonClick}/>
-              {notification && <div class="alert alert-danger" role="alert" style =  {{ marginTop: '10px'}}>{notification}</div>} {/* Notification */}
-              {notificationGood && <div class="alert alert-success" role="alert" style =  {{ marginTop: '10px'}}>{notificationGood}</div>} {/* Notification */}
+              {notification && <div className="alert alert-danger" role="alert" style =  {{ marginTop: '10px'}}>{notification}</div>} {/* Notification */}
+              {notificationGood && <div className="alert alert-success" role="alert" style =  {{ marginTop: '10px'}}>{notificationGood}</div>} {/* Notification */}
         </div>
     );
 }

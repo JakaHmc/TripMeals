@@ -4,10 +4,11 @@
 
   export default function Home() {
     return (
-      <div style={{
+      <div className="container" style={{
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: '30px'
       }}>
         <HomeCard buttonText="Dodaj recept" src="chef.jpeg" destination="/add-dish" />
         <HomeCard buttonText="Izberi jedi za smučanje" src="cartman.jpeg" destination="/add-trip" />
